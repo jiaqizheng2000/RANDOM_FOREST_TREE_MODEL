@@ -44,15 +44,14 @@ def random_tree_models_build():
     x_scaled = scalar.fit_transform(x)
 
     # Splitting the dataset for train and test
-    x_train, x_validation_test, y_train, y_validation_test = train_test_split(x_scaled, y, test_size=0.20, random_state=random_seed)
-    x_validation,x_test,y_validation,y_test  = train_test_split(x_validation_test,y_validation_test,test_size=0.5,random_state=random_seed)
+    x_train, x_test, y_train, y_test = train_test_split(x_scaled, y, test_size=0.10, random_state=random_seed)
 
     random_forest_model_test_base = RandomForestRegressor()
     random_forest_model_test_base.fit(x_train, y_train)
     print("Random forest Score of train data= %.3f" % random_forest_model_test_base.score(x_train,y_train))
-    print("Random forest base Score of validation&test data = %.3f" % random_forest_model_test_base.score(x_validation_test,y_validation_test))
+    print("Random forest base Score of validation&test data = %.3f" % random_forest_model_test_base.score(x_test,y_test))
     Score[0]=random_forest_model_test_base.score(x_train,y_train)
-    Score[1]=random_forest_model_test_base.score(x_validation_test,y_validation_test)
+    Score[1]=random_forest_model_test_base.score(x_test,y_test)
 
     random_forest_model_test_random = RandomizedSearchCV(estimator=random_forest_model_test_base,
                                                          param_distributions=random_forest_hp_range,
@@ -64,7 +63,7 @@ def random_tree_models_build():
                                                          random_state=random_forest_seed
                                                          )
     random_forest_model_test_random.fit(x_train, y_train)
-    print("Random forest Score of validation data= %.3f"%random_forest_model_test_random.score(x_train,y_train))
+    print("Random forest Score of train data after choosing best params= %.3f"%random_forest_model_test_random.score(x_train,y_train))
     Score[2]=random_forest_model_test_random.score(x_train,y_train)
     best_hp_now = random_forest_model_test_random.best_params_
     print(best_hp_now)
@@ -72,19 +71,19 @@ def random_tree_models_build():
     #test data
     score=random_forest_model_test_random.score(x_test,y_test)
     Score[3]=random_forest_model_test_random.score(x_test,y_test)
-    print("Random forest Score of test data = %.3f"%score)
+    print("Random forest Score of test data after choosing best params= %.3f"%score)
 
     #save best parmas and model
     params.append(best_hp_now)
-    save_model(random_forest_model_test_random,'RTF_%.3f_%.3f_%.3f_%.3f_%d'%(Score[0],Score[1],Score[2],Score[3],random_seed))
-    SCORE= {"Train_80%": Score[0], "Valid_test_%20": Score[1], "Valid_%10": Score[2], "Test_%10": Score[3]}
+    save_model(random_forest_model_test_random,'RTF_%.3f_%.3f_%.3f_%.3f'%(Score[0],Score[1],Score[2],Score[3]),random_seed)
+    SCORE= {"Train_90%_base": Score[0], "test_%10_base": Score[1], "Train_%10_after_choosing": Score[2], "Test_%10_after_choosing": Score[3]}
     Score_ALL.append(SCORE)
 
 if __name__=="__main__":
     for j in random_seed_range:
         random_seed=j
         for i in range(10):
-            random_tree_model()
+            random_tree_models_build()
 
         # save params to csv file
         paramters=pd.DataFrame(params)
