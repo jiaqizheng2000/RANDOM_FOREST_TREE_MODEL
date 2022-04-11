@@ -56,7 +56,7 @@ if __name__=="__main__":
     for j in random_seed_range:
         random_seed=j
         for i in range(10):
-            RFT_test()
+            model_test()
 
         # save params to csv file
         paramters=pd.DataFrame(params)
