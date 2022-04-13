@@ -30,14 +30,14 @@ def model_test():
 
     random_forest_model_test_base = RandomForestRegressor()
     random_forest_model_test_base.fit(x_train, y_train)
-    print("Random forest Score of train data= %.3f" % random_forest_model_test_base.score(x_train,y_train))
-    print("Random forest base Score test data = %.3f" % random_forest_model_test_base.score(x_test,y_test))
+    # print("Random forest Score of train data= %.3f" % random_forest_model_test_base.score(x_train,y_train))
+    # print("Random forest base Score test data = %.3f" % random_forest_model_test_base.score(x_test,y_test))
     Score[0]=random_forest_model_test_base.score(x_train,y_train)
     Score[1]=random_forest_model_test_base.score(x_validation_test,y_validation_test)
 
     random_forest_model_test_random = load_model('RTF_0.961_0.852_0.991_0.769_42',42)
     random_forest_model_test_random.fit(x_validation, y_validation)
-    print("Random forest Score of validation data= %.3f"%random_forest_model_test_random.score(x_validation,y_validation))
+    # print("Random forest Score of validation data= %.3f"%random_forest_model_test_random.score(x_validation,y_validation))
     Score[2]=random_forest_model_test_random.score(x_validation,y_validation)
     best_hp_now = random_forest_model_test_random.best_params_
     print(best_hp_now)
@@ -45,11 +45,11 @@ def model_test():
     #test data
     score=random_forest_model_test_random.score(x_test,y_test)
     Score[3]=random_forest_model_test_random.score(x_test,y_test)
-    print("Random forest Score of test data = %.3f"%score)
+    # print("Random forest Score of test data = %.3f"%score)
 
     #save best parmas and model
     params.append(best_hp_now)
-    SCORE= {"Train_80%": Score[0], "Valid_test_%20": Score[1], "Valid_%10": Score[2], "Test_%10": Score[3]}
+    SCORE= {"Train_90_base%": Score[0], "test_%10_base": Score[1], "Train_%90_best": Score[2], "Test_%10_best": Score[3]}
     Score_ALL.append(SCORE)
 
 if __name__=="__main__":

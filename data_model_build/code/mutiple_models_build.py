@@ -32,9 +32,9 @@ def random_tree_models_build():
                                'bootstrap':bootstrap_range
                               }
 
-    datapath=os.path.join(BASEPATH,'data','metal_ceramic_data_all_with_A_T.csv')
+    # datapath=os.path.join(BASEPATH,'data','metal_ceramic_data_all_with_A_T.csv')
     # datapath = os.path.join(BASEPATH, 'data', 'metal_ceramic_data_all_with_A_T_reduced_MIT.csv')
-    #datapath = os.path.join(BASEPATH, 'data', 'metal_ceramic_data_all_with_A_T_reduced.csv')
+    datapath = os.path.join(BASEPATH, 'data', 'metal_ceramic_data_all_with_A_T_reduced.csv')
     df = pd.read_csv(datapath)  # read file
     x = df.drop(columns=['Wetting angle', 'Metal', 'Substrate'])  # x as predictor,y as result
     # x = df(columns=['Me_MagpieData mean NdValence', 'Me_MagpieData mean CovalentRadius', 'Me_MagpieData mean GSmagmom', 'Me_MagpieData mean Electronegativity', 'Testing temperature (K)', 'Me_MagpieData mean GSbandgap', 'Ce_MagpieData mean NUnfilled', 'Me_MagpieData mean SpaceGroupNumber', 'Ce_MagpieData mean MeltingT'])
@@ -49,7 +49,7 @@ def random_tree_models_build():
     random_forest_model_test_base = RandomForestRegressor()
     random_forest_model_test_base.fit(x_train, y_train)
     print("Random forest Score of train data= %.3f" % random_forest_model_test_base.score(x_train,y_train))
-    print("Random forest base Score of validation&test data = %.3f" % random_forest_model_test_base.score(x_test,y_test))
+    print("Random forest base Score of test data = %.3f" % random_forest_model_test_base.score(x_test,y_test))
     Score[0]=random_forest_model_test_base.score(x_train,y_train)
     Score[1]=random_forest_model_test_base.score(x_test,y_test)
 
@@ -87,14 +87,14 @@ if __name__=="__main__":
 
         # save params to csv file
         paramters=pd.DataFrame(params)
-        params_path=os.path.join(BASEPATH,'PARAMS','42_features_used_All','params_%d.csv'%random_seed)
+        # params_path=os.path.join(BASEPATH,'PARAMS','42_features_used_All','params_%d.csv'%random_seed)
         # params_path=os.path.join(BASEPATH,'PARAMS','8_features_used_MIT','params_%d.csv'%random_seed)
-        # params_path=os.path.join(BASEPATH,'PARAMS','9_features_used_Own','params_%d.csv'%random_seed)
+        params_path=os.path.join(BASEPATH,'PARAMS','9_features_used_Own','params_%d.csv'%random_seed)
         paramters.to_csv(params_path)
 
         #save results to csv file
         results=pd.DataFrame(Score_ALL)
-        results_path=os.path.join(BASEPATH,'RESULTS','42_features_used_All','results_%d.csv'%random_seed)
+        # results_path=os.path.join(BASEPATH,'RESULTS','42_features_used_All','results_%d.csv'%random_seed)
         # results_path=os.path.join(BASEPATH,'RESULTS','8_features_used_MIT','results_%d.csv'%random_seed)
-        # results_path=os.path.join(BASEPATH,'RESULTS','9_features_used_Own','results_%d.csv'%random_seed)
+        results_path=os.path.join(BASEPATH,'RESULTS','9_features_used_Own','results_%d.csv'%random_seed)
         results.to_csv(results_path)
