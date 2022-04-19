@@ -76,7 +76,7 @@ def random_tree_models_build():
     #save best parmas and model
     params.append(best_hp_now)
     save_model(random_forest_model_test_random,'RTF_%.3f_%.3f_%.3f_%.3f'%(Score[0],Score[1],Score[2],Score[3]),random_seed)
-    SCORE= {"Train_90%_base": Score[0], "test_%10_base": Score[1], "Train_%10_after_choosing": Score[2], "Test_%10_after_choosing": Score[3]}
+    SCORE= {"Train_90%_base": Score[0], "test_%10_base": Score[1], "Train_%90_after_choosing": Score[2], "Test_%10_after_choosing": Score[3]}
     Score_ALL.append(SCORE)
 
 if __name__=="__main__":
